@@ -1,0 +1,23 @@
+brilliant-clone/
+│
+├── netlify/
+│   └── functions/          # Node.js serverless backends
+│       └── getLesson.js    # Fetches lesson JSON data
+│
+├── src/                    # Frontend source files
+│   ├── scss/
+│   │   ├── main.scss       # Main stylesheet compiling to CSS
+│   │   ├── _variables.scss # Branding colors, spacing, typography
+│   │   └── _quiz.scss      # Interactive component styles
+│   │
+│   ├── js/
+│   │   ├── app.js          # Core app logic (fetching, state, rendering)
+│   │   └── interactive.js  # Handle drag-and-drop or sliders (Brilliant style)
+│   │
+│   └── data/
+│       └── intro-logic.json # Your course content
+│
+├── index.html              # Main landing / dashboard page
+├── lesson.html             # The interactive lesson viewer
+├── package.json            # Node.js dependencies and build scripts
+└── netlify.toml            # Netlify configuration file
