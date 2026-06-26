@@ -49,3 +49,69 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+import netlifyIdentity from 'netlify-identity-widget';
+
+// --- INITIALIZE NETLIFY CONFIGURATION ---
+netlifyIdentity.init({
+    container: '#netlify-auth-root', // Points to our root element
+    locale: 'en',
+});
+
+const desktopAuthContainer = document.querySelector('.auth-buttons-desktop');
+
+// --- RENDER DYNAMIC HEADER NAVIGATION ---
+function renderUserHeaderState() {
+    const user = netlifyIdentity.currentUser();
+    
+    if (user) {
+        // User is logged in securely via Netlify
+        const displayName = user.user_metadata.full_name || user.email.split('@')[0];
+        
+        desktopAuthContainer.innerHTML = `
+            <span class="user-display">👋 ${displayName}</span>
+            <button class="btn-pill btn-outline" id="logoutTrigger">Log Out</button>
+        `;
+        
+        // Bind dynamic logout execution
+        document.getElementById('logoutTrigger').addEventListener('click', () => {
+            netlifyIdentity.logout();
+        });
+    } else {
+        // Fallback back to standard unauthenticated navigation actions
+        desktopAuthContainer.innerHTML = `
+            <a href="#" class="btn-text" id="signinTrigger">Sign In</a>
+            <a href="#" class="btn-pill btn-outline" id="signupTrigger">Get Started</a>
+        `;
+        
+        // Bind modal open triggers
+        document.getElementById('signinTrigger').addEventListener('click', (e) => {
+            e.preventDefault();
+            netlifyIdentity.open('login'); // Opens modal directly on login tab
+        });
+
+        document.getElementById('signupTrigger').addEventListener('click', (e) => {
+            e.preventDefault();
+            netlifyIdentity.open('signup'); // Opens modal directly on signup tab
+        });
+    }
+}
+
+// --- IDENTITY LIFECYCLE EVENT LISTENERS ---
+netlifyIdentity.on('init', user => {
+    renderUserHeaderState();
+});
+
+netlifyIdentity.on('login', user => {
+    renderUserHeaderState();
+    netlifyIdentity.close(); // Close modal on successful validation
+});
+
+netlifyIdentity.on('logout', () => {
+    renderUserHeaderState();
+});
+
+// Run verification initial check
+document.addEventListener('DOMContentLoaded', () => {
+    renderUserHeaderState();
+});

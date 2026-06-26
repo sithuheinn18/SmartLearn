@@ -25,8 +25,8 @@
                 </div>
             </nav>
             <div class="auth-buttons-desktop">
-                <a href="#" class="btn-text">Sign In</a>
-                <a href="#" class="btn-pill btn-outline">Get Started</a>
+                <a href="#" class="btn-text" id="signinTrigger">Sign In</a>
+                <a href="#" class="btn-pill btn-outline" id="signupTrigger">Get Started</a>
             </div>
             <button class="hamburger-toggle" id="menu-trigger" aria-label="Toggle menu">
                 <span class="bar"></span>
@@ -211,13 +211,13 @@
                         <h2>Behind SmartLearn</h2>
                         <div class="profile-avatar">👨‍💻</div>
                         <p class="bio-text">
-                            Hi, I'm the creator of SmartLearn. As an independent developer and designer, I build highly interactive web spaces that prioritize speed, responsive fluid layout mechanics, and elegant UI states.
+                            Hi, I'm Sithu Hein, the creator of SmartLearn. As an independent developer and designer, I build highly interactive web spaces that prioritize speed, responsive fluid layout mechanics, and elegant UI states.
                         </p>
                         <p class="bio-subtext">
                             My mission is to transform static educational information into responsive, runtime-driven engineering models that anyone can learn from.
                         </p>
                         <div class="social-links">
-                            <a href="#" class="btn-pill btn-outline">GitHub</a>
+                            <a href="https://github.com/sithuheinn18" class="btn-pill btn-outline">GitHub</a>
                             <a href="#" class="btn-text">Portfolio &rarr;</a>
                         </div>
                     </div>
@@ -267,7 +267,6 @@
                     </p>
                     <div class="conclusion-actions">
                         <a href="#" class="btn-pill btn-primary">Get Started</a>
-                        <a href="#" class="btn-pill btn-outline">Start Learning &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -284,6 +283,7 @@
             </div>
         </div>
     </footer>
-<script src="src/js/app.js"></script>
+<div id="netlify-auth-root"></div>
+<script type="module" src="src/js/app.js"></script>
 </body>
 </html>
