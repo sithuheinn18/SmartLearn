@@ -687,6 +687,22 @@ body {
   .pricing-section .pricing-header h2 {
     font-size: 2rem;
   }
+
+  .pricing-section .price-card {
+    padding: 32px 20px;
+  }
+
+  .pricing-section .price-card.popular .popular-tag {
+    left: 20px;
+  }
+
+  .pricing-section .price-card .price-display .amount {
+    font-size: 2.8rem;
+  }
+
+  .pricing-section .price-card .features-list li {
+    font-size: .85rem;
+  }
 }
 
 .about-section {

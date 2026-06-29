@@ -737,6 +737,23 @@ body {
         .pricing-header h2 {
             font-size: 2rem;
         }
+        .price-card {
+            padding: 32px 20px; // Reduce horizontal padding from 32px to 20px
+            
+            &.popular .popular-tag {
+                left: 20px; // Align the popular tag with the new tighter padding bounds
+            }
+
+            .price-display {
+                .amount {
+                    font-size: 2.8rem; // Scale down from 3.5rem so numbers fit safely
+                }
+            }
+
+            .features-list li {
+                font-size: 0.85rem; // Slightly drop down text scale to avoid text wrapping awkwardly
+            }
+        }
     }
 }
 

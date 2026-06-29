@@ -757,50 +757,71 @@ document.addEventListener("DOMContentLoaded", ()=>{
     container: '#netlify-auth-root',
     locale: 'en'
 });
+// Select layout element structures
 const desktopAuthContainer = document.querySelector('.auth-buttons-desktop');
-// --- RENDER DYNAMIC HEADER NAVIGATION ---
+const mobileAuthContainer = document.querySelector('.mobile-only-actions');
+// --- HELPER FUNCTION: FORCE MOBILE DRAWER TO SHUT DEFTLY ---
+function closeMobileDrawer() {
+    const menuTrigger = document.getElementById("menu-trigger");
+    const mobileDrawer = document.getElementById("mobile-drawer");
+    // 1. Remove common active layout state classes if present
+    if (mobileDrawer && menuTrigger) {
+        mobileDrawer.classList.remove("open");
+        menuTrigger.classList.remove("open-active");
+    }
+}
+// --- RENDER DYNAMIC NAVIGATION ---
 function renderUserHeaderState() {
     const user = (0, _netlifyIdentityWidgetDefault.default).currentUser();
     if (user) {
-        // User is logged in securely via Netlify
+        // --- LOGGED IN ARCHITECTURE ---
         const displayName = user.user_metadata.full_name || user.email.split('@')[0];
-        desktopAuthContainer.innerHTML = `
+        const loggedInMarkup = `
             <span class="user-display">\u{1F44B} ${displayName}</span>
-            <button class="btn-pill btn-outline" id="logoutTrigger">Log Out</button>
+            <button class="btn-pill btn-outline auth-logout-btn">Log Out</button>
         `;
-        // Bind dynamic logout execution
-        document.getElementById('logoutTrigger').addEventListener('click', ()=>{
-            (0, _netlifyIdentityWidgetDefault.default).logout();
+        if (desktopAuthContainer) desktopAuthContainer.innerHTML = loggedInMarkup;
+        if (mobileAuthContainer) mobileAuthContainer.innerHTML = loggedInMarkup;
+        document.querySelectorAll('.auth-logout-btn').forEach((btn)=>{
+            btn.addEventListener('click', ()=>{
+                closeMobileDrawer(); // Shut drawer on logout
+                (0, _netlifyIdentityWidgetDefault.default).logout();
+            });
         });
     } else {
-        // Fallback back to standard unauthenticated navigation actions
-        desktopAuthContainer.innerHTML = `
-            <a href="#" class="btn-text" id="signinTrigger">Sign In</a>
-            <a href="#" class="btn-pill btn-outline" id="signupTrigger">Get Started</a>
-        `;
-        // Bind modal open triggers
-        document.getElementById('signinTrigger').addEventListener('click', (e)=>{
-            e.preventDefault();
-            (0, _netlifyIdentityWidgetDefault.default).open('login'); // Opens modal directly on login tab
+        // --- UN-AUTHENTICATED ARCHITECTURE ---
+        if (desktopAuthContainer) desktopAuthContainer.innerHTML = `
+                <a href="#" class="btn-text auth-signin-trigger">Sign In</a>
+                <a href="#" class="btn-pill btn-primary auth-signup-trigger">Get Started</a>
+            `;
+        if (mobileAuthContainer) mobileAuthContainer.innerHTML = `
+                <a href="#" class="btn-text auth-signin-trigger">Sign In</a>
+                <a href="#" class="btn-pill btn-primary auth-signup-trigger">Get Started</a>
+            `;
+        // Bind actions + close active drawer container
+        document.querySelectorAll('.auth-signin-trigger').forEach((btn)=>{
+            btn.addEventListener('click', (e)=>{
+                e.preventDefault();
+                closeMobileDrawer(); // 🔥 Clear the drawer screen viewport instantly!
+                (0, _netlifyIdentityWidgetDefault.default).open('login');
+            });
         });
-        document.getElementById('signupTrigger').addEventListener('click', (e)=>{
-            e.preventDefault();
-            (0, _netlifyIdentityWidgetDefault.default).open('signup'); // Opens modal directly on signup tab
+        document.querySelectorAll('.auth-signup-trigger').forEach((btn)=>{
+            btn.addEventListener('click', (e)=>{
+                e.preventDefault();
+                closeMobileDrawer(); // 🔥 Clear the drawer screen viewport instantly!
+                (0, _netlifyIdentityWidgetDefault.default).open('signup');
+            });
         });
     }
 }
 // --- IDENTITY LIFECYCLE EVENT LISTENERS ---
-(0, _netlifyIdentityWidgetDefault.default).on('init', (user)=>{
-    renderUserHeaderState();
-});
+(0, _netlifyIdentityWidgetDefault.default).on('init', (user)=>renderUserHeaderState());
 (0, _netlifyIdentityWidgetDefault.default).on('login', (user)=>{
     renderUserHeaderState();
-    (0, _netlifyIdentityWidgetDefault.default).close(); // Close modal on successful validation
+    (0, _netlifyIdentityWidgetDefault.default).close();
 });
-(0, _netlifyIdentityWidgetDefault.default).on('logout', ()=>{
-    renderUserHeaderState();
-});
-// Run verification initial check
+(0, _netlifyIdentityWidgetDefault.default).on('logout', ()=>renderUserHeaderState());
 document.addEventListener('DOMContentLoaded', ()=>{
     renderUserHeaderState();
 });
