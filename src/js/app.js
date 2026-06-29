@@ -83,7 +83,7 @@ function renderUserHeaderState() {
         const displayName = user.user_metadata.full_name || user.email.split('@')[0];
         const loggedInMarkup = `
             <span class="user-display">👋 ${displayName}</span>
-            <button class="btn-pill btn-outline auth-logout-btn">Log Out</button>
+            <a herf="#" class="btn-pill btn-outline auth-logout-btn">Log Out</button>
         `;
         
         if (desktopAuthContainer) desktopAuthContainer.innerHTML = loggedInMarkup;
