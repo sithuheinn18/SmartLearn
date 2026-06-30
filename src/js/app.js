@@ -117,16 +117,28 @@ function renderUserHeaderState() {
         document.querySelectorAll('.auth-signin-trigger').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                closeMobileDrawer(); //  Clear the drawer screen viewport instantly!
-                netlifyIdentity.open('login');
+                closeMobileDrawer();
+                
+                // If already logged in somehow, jump straight to dashboard, otherwise open modal
+                if (netlifyIdentity.currentUser()) {
+                    window.location.href = 'courses.html';
+                } else {
+                    netlifyIdentity.open('login');
+                }
             });
         });
 
         document.querySelectorAll('.auth-signup-trigger').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                closeMobileDrawer(); //  Clear the drawer screen viewport instantly!
-                netlifyIdentity.open('signup');
+                closeMobileDrawer();
+                
+                // Smart check: send straight to workspace if verified, else prompt registry
+                if (netlifyIdentity.currentUser()) {
+                    window.location.href = 'courses.html';
+                } else {
+                    netlifyIdentity.open('signup');
+                }
             });
         });
     }
@@ -134,8 +146,22 @@ function renderUserHeaderState() {
 
 // --- IDENTITY LIFECYCLE EVENT LISTENERS ---
 netlifyIdentity.on('init', user => renderUserHeaderState());
-netlifyIdentity.on('login', user => { renderUserHeaderState(); netlifyIdentity.close(); });
-netlifyIdentity.on('logout', () => renderUserHeaderState());
+
+netlifyIdentity.on('login', user => { 
+    renderUserHeaderState(); 
+    netlifyIdentity.close(); 
+    
+    // 🔥 INSTANT FORWARDING: Send them straight to the courses portal!
+    window.location.href = 'courses.html'; 
+});
+
+netlifyIdentity.on('logout', () => {
+    renderUserHeaderState();
+    // If they log out while looking at the courses, boot them back to the landing homepage
+    if (window.location.pathname.includes('courses.html')) {
+        window.location.href = 'index.html';
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     renderUserHeaderState();

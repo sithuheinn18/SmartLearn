@@ -1159,3 +1159,90 @@ body {
         }
     }
 }
+
+/* --- WORKSPACE CORE APPARATUS --- */
+.workspace-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: calc(100vh - 70px);
+    background-color: #f8f9fa;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tracks-sidebar {
+    background-color: #ffffff;
+    border-right: 1px solid #e9ecef;
+    padding: 24px;
+
+    .track-links {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .track-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        background: none;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.active, &:hover {
+            border-color: #0070f3;
+            background-color: #f0f7ff;
+        }
+    }
+}
+
+// ----------------------------------------------------
+
+// Stylings for courses page
+
+.puzzle-workspace {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    .workspace-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 40px;
+        width: 100%;
+        max-width: 680px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .puzzle-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 24px 0;
+    }
+
+    .option-btn {
+        padding: 16px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        background: #ffffff;
+        text-align: left;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s;
+
+        &:hover { background: #f8f9fa; }
+        &.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+        &.incorrect { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+    }
+}
+
+.hidden { display: none !important; }

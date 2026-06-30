@@ -802,15 +802,19 @@ function renderUserHeaderState() {
         document.querySelectorAll('.auth-signin-trigger').forEach((btn)=>{
             btn.addEventListener('click', (e)=>{
                 e.preventDefault();
-                closeMobileDrawer(); //  Clear the drawer screen viewport instantly!
-                (0, _netlifyIdentityWidgetDefault.default).open('login');
+                closeMobileDrawer();
+                // If already logged in somehow, jump straight to dashboard, otherwise open modal
+                if ((0, _netlifyIdentityWidgetDefault.default).currentUser()) window.location.href = 'courses.html';
+                else (0, _netlifyIdentityWidgetDefault.default).open('login');
             });
         });
         document.querySelectorAll('.auth-signup-trigger').forEach((btn)=>{
             btn.addEventListener('click', (e)=>{
                 e.preventDefault();
-                closeMobileDrawer(); //  Clear the drawer screen viewport instantly!
-                (0, _netlifyIdentityWidgetDefault.default).open('signup');
+                closeMobileDrawer();
+                // Smart check: send straight to workspace if verified, else prompt registry
+                if ((0, _netlifyIdentityWidgetDefault.default).currentUser()) window.location.href = 'courses.html';
+                else (0, _netlifyIdentityWidgetDefault.default).open('signup');
             });
         });
     }
@@ -820,8 +824,14 @@ function renderUserHeaderState() {
 (0, _netlifyIdentityWidgetDefault.default).on('login', (user)=>{
     renderUserHeaderState();
     (0, _netlifyIdentityWidgetDefault.default).close();
+    // 🔥 INSTANT FORWARDING: Send them straight to the courses portal!
+    window.location.href = 'courses.html';
 });
-(0, _netlifyIdentityWidgetDefault.default).on('logout', ()=>renderUserHeaderState());
+(0, _netlifyIdentityWidgetDefault.default).on('logout', ()=>{
+    renderUserHeaderState();
+    // If they log out while looking at the courses, boot them back to the landing homepage
+    if (window.location.pathname.includes('courses.html')) window.location.href = 'index.html';
+});
 document.addEventListener('DOMContentLoaded', ()=>{
     renderUserHeaderState();
 });
