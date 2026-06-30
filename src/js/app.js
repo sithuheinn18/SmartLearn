@@ -1,3 +1,5 @@
+import netlifyIdentity from 'netlify-identity-widget';
+
 // Wait for DOM layout tree paths to assemble fully
 document.addEventListener("DOMContentLoaded", () => {
     
@@ -50,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-import netlifyIdentity from 'netlify-identity-widget';
 
 // --- INITIALIZE NETLIFY CONFIGURATION ---
 netlifyIdentity.init({
@@ -116,7 +117,7 @@ function renderUserHeaderState() {
         document.querySelectorAll('.auth-signin-trigger').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                closeMobileDrawer(); // 🔥 Clear the drawer screen viewport instantly!
+                closeMobileDrawer(); //  Clear the drawer screen viewport instantly!
                 netlifyIdentity.open('login');
             });
         });
@@ -124,7 +125,7 @@ function renderUserHeaderState() {
         document.querySelectorAll('.auth-signup-trigger').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                closeMobileDrawer(); // 🔥 Clear the drawer screen viewport instantly!
+                closeMobileDrawer(); //  Clear the drawer screen viewport instantly!
                 netlifyIdentity.open('signup');
             });
         });

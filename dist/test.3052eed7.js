@@ -714,10 +714,10 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"9f5IL":[function(require,module,exports,__globalThis) {
-// Wait for DOM layout tree paths to assemble fully
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _netlifyIdentityWidget = require("netlify-identity-widget");
 var _netlifyIdentityWidgetDefault = parcelHelpers.interopDefault(_netlifyIdentityWidget);
+// Wait for DOM layout tree paths to assemble fully
 document.addEventListener("DOMContentLoaded", ()=>{
     // --- MOBILE DRAWER NAV ELEMENTS ---
     const menuTrigger = document.getElementById("menu-trigger");
@@ -778,7 +778,7 @@ function renderUserHeaderState() {
         const displayName = user.user_metadata.full_name || user.email.split('@')[0];
         const loggedInMarkup = `
             <span class="user-display">\u{1F44B} ${displayName}</span>
-            <button class="btn-pill btn-outline auth-logout-btn">Log Out</button>
+            <a herf="#" class="btn-pill btn-outline auth-logout-btn">Log Out</button>
         `;
         if (desktopAuthContainer) desktopAuthContainer.innerHTML = loggedInMarkup;
         if (mobileAuthContainer) mobileAuthContainer.innerHTML = loggedInMarkup;
@@ -802,14 +802,14 @@ function renderUserHeaderState() {
         document.querySelectorAll('.auth-signin-trigger').forEach((btn)=>{
             btn.addEventListener('click', (e)=>{
                 e.preventDefault();
-                closeMobileDrawer(); // 🔥 Clear the drawer screen viewport instantly!
+                closeMobileDrawer(); //  Clear the drawer screen viewport instantly!
                 (0, _netlifyIdentityWidgetDefault.default).open('login');
             });
         });
         document.querySelectorAll('.auth-signup-trigger').forEach((btn)=>{
             btn.addEventListener('click', (e)=>{
                 e.preventDefault();
-                closeMobileDrawer(); // 🔥 Clear the drawer screen viewport instantly!
+                closeMobileDrawer(); //  Clear the drawer screen viewport instantly!
                 (0, _netlifyIdentityWidgetDefault.default).open('signup');
             });
         });

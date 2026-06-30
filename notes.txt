@@ -11,8 +11,7 @@ brilliant-clone/
 │   │   └── _quiz.scss      # Interactive component styles
 │   │
 │   ├── js/
-│   │   ├── app.js          # Core app logic (fetching, state, rendering)
-│   │   └── interactive.js  # Handle drag-and-drop or sliders (Brilliant style)
+│   │   ├── app.js          
 │   │
 │   └── data/
 │       └── intro-logic.json # Your course content

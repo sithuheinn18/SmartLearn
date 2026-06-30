@@ -87,6 +87,7 @@ body {
 .action {
   color: var(--text-main);
   text-decoration: none;
+  transition: background-color .3s, color .3s;
 }
 
 .action:hover {
