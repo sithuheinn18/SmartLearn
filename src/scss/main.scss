@@ -1165,7 +1165,7 @@ body {
     display: grid;
     grid-template-columns: 320px 1fr;
     min-height: calc(100vh - 70px);
-    background-color: #f8f9fa;
+    background-color: $bg-secondary;
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
@@ -1173,8 +1173,8 @@ body {
 }
 
 .tracks-sidebar {
-    background-color: #ffffff;
-    border-right: 1px solid #e9ecef;
+    background-color: $bg-primary;
+    border-right: 1px solid $border-color;
     padding: 24px;
 
     .track-links {
@@ -1190,15 +1190,16 @@ body {
         gap: 16px;
         padding: 16px;
         background: none;
-        border: 1px solid #e9ecef;
+        border: 1px solid $border-color;
         border-radius: 12px;
         text-align: left;
         cursor: pointer;
         transition: all 0.2s ease;
+        color: $text-main;
 
         &.active, &:hover {
-            border-color: #0070f3;
-            background-color: #f0f7ff;
+            border-color: $brand-color;
+            background-color: $bg-primary;
         }
     }
 }
@@ -1214,7 +1215,7 @@ body {
     align-items: flex-start;
 
     .workspace-card {
-        background: #ffffff;
+        background: $bg-primary;
         border-radius: 16px;
         padding: 40px;
         width: 100%;
@@ -1231,17 +1232,17 @@ body {
 
     .option-btn {
         padding: 16px;
-        border: 1px solid #ced4da;
+        border: 1px solid $border-color;
         border-radius: 8px;
-        background: #ffffff;
+        background: $bg-primary;
         text-align: left;
         cursor: pointer;
         font-weight: 500;
         transition: background 0.2s;
 
-        &:hover { background: #f8f9fa; }
-        &.correct { background: #d4edda; border-color: #28a745; color: #155724; }
-        &.incorrect { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+        &:hover { background: $bg-secondary; }
+        &.correct { background: $bg-secondary; border-color: #28a745; color: #155724; }
+        &.incorrect { background: $bg-secondary; border-color: #dc3545; color: #721c24; }
     }
 }
 

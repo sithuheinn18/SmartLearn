@@ -714,93 +714,54 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"2xiTU":[function(require,module,exports,__globalThis) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _netlifyIdentityWidget = require("netlify-identity-widget");
-var _netlifyIdentityWidgetDefault = parcelHelpers.interopDefault(_netlifyIdentityWidget);
-// --- DATA REPOSITORY FOR RUNTIME SEQUENCES ---
-const puzzleDatabase = {
-    logic: {
-        title: "Deductive Syllogisms",
-        question: "If all A are B, and some B are C... Are all A definitely C?",
-        options: [
-            {
-                text: "Yes, this logic naturally compiles.",
-                correct: false
-            },
-            {
-                text: "No, it is structurally impossible.",
-                correct: false
-            },
-            {
-                text: "Is it impossible to tell precisely without data mapping.",
-                correct: true
-            }
-        ],
-        explanation: "\uD83E\uDDE0 **Intuition Matrix:** Think of circles (Venn Diagrams). All of Circle A sits securely inside Circle B. Circle C overlaps with *some* parts of Circle B, but it doesn't necessarily have to touch Circle A at all! Hence, it is impossible to determine without further parameter parameters."
+const searchInput = document.getElementById('catalogSearch');
+const gridContainer = document.getElementById('coursesGrid');
+const resultCountText = document.getElementById('resultCount');
+// --- ASYNCHRONOUS API DATA FETCH ENGINE ---
+async function fetchAndRenderCourses(searchQuery = "") {
+    try {
+        gridContainer.innerHTML = `Searching data arrays...`;
+        // Fetch from local Netlify proxy router
+        const response = await fetch(`/.netlify/functions/get-courses?search=${encodeURIComponent(searchQuery)}`);
+        if (!response.ok) throw new Error("Network pipeline transmission failure.");
+        const courses = await response.json();
+        renderGridCards(courses);
+    } catch (err) {
+        console.error(err);
+        gridContainer.innerHTML = `Error loading courses catalog workspace.`;
     }
-};
-const workspaceElement = document.getElementById('activePuzzleCard');
-// --- APP RUNTIME CONTROLLER ---
-function initWorkspace() {
-    // Prevent unauthenticated viewing vectors
-    const user = (0, _netlifyIdentityWidgetDefault.default).currentUser();
-    if (!user) {
-        workspaceElement.innerHTML = `
-            <div class="gate-fallback">
-                <h3>\u{1F512} Secure Verification Required</h3>
-                <p>Please authenticate or register your profile matrix via the header links to access active puzzles.</p>
-            </div>
-        `;
+}
+// --- RENDERING PARSER MATRIX ---
+function renderGridCards(coursesArray) {
+    resultCountText.innerText = `Showing ${coursesArray.length} available course tracks`;
+    if (coursesArray.length === 0) {
+        gridContainer.innerHTML = `No tracks found matching those keywords. Try another track!`;
         return;
     }
-    renderActivePuzzle('logic');
+    gridContainer.innerHTML = coursesArray.map((course)=>`
+        
+            ${course.icon}
+            
+                ${course.category}
+                ${course.title}
+                ${course.description}
+                
+                    \u{1F4CB} ${course.modules} Modules
+                    Start Track
+                
+            
+        
+    `).join('');
 }
-function renderActivePuzzle(trackKey) {
-    const puzzle = puzzleDatabase[trackKey];
-    if (!puzzle) return;
-    workspaceElement.innerHTML = `
-        <div class="puzzle-header">
-            <span class="category-tag">${trackKey.toUpperCase()} // MODULE 01</span>
-            <h2>${puzzle.title}</h2>
-        </div>
-        <div class="puzzle-content">
-            <p class="question-text">${puzzle.question}</p>
-        </div>
-        <div class="puzzle-options">
-            ${puzzle.options.map((opt, idx)=>`
-                <button class="option-btn" data-index="${idx}">${opt.text}</button>
-            `).join('')}
-        </div>
-        <div class="feedback-panel hidden" id="feedbackPanel"></div>
-    `;
-    // Bind Interaction Hooks
-    workspaceElement.querySelectorAll('.option-btn').forEach((btn)=>{
-        btn.addEventListener('click', (e)=>handleAnswerSelection(e, puzzle));
-    });
-}
-function handleAnswerSelection(e, puzzle) {
-    const selectedIdx = parseInt(e.target.dataset.index);
-    const chosenOption = puzzle.options[selectedIdx];
-    const feedbackPanel = document.getElementById('feedbackPanel');
-    // Reset styles across option array elements
-    document.querySelectorAll('.option-btn').forEach((btn)=>btn.classList.remove('incorrect', 'correct'));
-    if (chosenOption.correct) {
-        e.target.classList.add('correct');
-        feedbackPanel.innerHTML = `<div class="alert success">\u{2728} **Correct Execution!** <br>${puzzle.explanation}</div>`;
-    } else {
-        e.target.classList.add('incorrect');
-        feedbackPanel.innerHTML = `<div class="alert warning">\u{274C} **Incorrect Conclusion.** <br>${puzzle.explanation}</div>`;
-    }
-    feedbackPanel.classList.remove('hidden');
-}
-// --- IDENTITY SECURITY HOOKS ---
-(0, _netlifyIdentityWidgetDefault.default).on('login', ()=>initWorkspace());
-(0, _netlifyIdentityWidgetDefault.default).on('logout', ()=>initWorkspace());
+// --- LIVE INPUT SEARCH STREAM LISTENERS ---
+if (searchInput) searchInput.addEventListener('input', (e)=>{
+    fetchAndRenderCourses(e.target.value);
+});
+// Initial baseline paint load
 document.addEventListener('DOMContentLoaded', ()=>{
-    // Let Netlify process authorization records fully before validating
-    setTimeout(initWorkspace, 300);
+    fetchAndRenderCourses("");
 });
 
-},{"netlify-identity-widget":"aE0Xm","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["b8BeG","2xiTU"], "2xiTU", "parcelRequirefc40", {})
+},{}]},["b8BeG","2xiTU"], "2xiTU", "parcelRequirefc40", {})
 
 //# sourceMappingURL=courses.9aacd79f.js.map

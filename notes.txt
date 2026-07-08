@@ -20,3 +20,5 @@ brilliant-clone/
 ├── lesson.html             # The interactive lesson viewer
 ├── package.json            # Node.js dependencies and build scripts
 └── netlify.toml            # Netlify configuration file
+
+npm install -g npm@11.18.0

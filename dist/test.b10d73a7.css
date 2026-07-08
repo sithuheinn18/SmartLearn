@@ -1105,7 +1105,7 @@ body {
 }
 
 .workspace-layout {
-  background-color: #f8f9fa;
+  background-color: var(--bg-secondary);
   grid-template-columns: 320px 1fr;
   min-height: calc(100vh - 70px);
   display: grid;
@@ -1118,8 +1118,8 @@ body {
 }
 
 .tracks-sidebar {
-  background-color: #fff;
-  border-right: 1px solid #e9ecef;
+  background-color: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
   padding: 24px;
 }
 
@@ -1131,10 +1131,11 @@ body {
 }
 
 .tracks-sidebar .track-item {
+  border: 1px solid var(--border-color);
   text-align: left;
   cursor: pointer;
+  color: var(--text-main);
   background: none;
-  border: 1px solid #e9ecef;
   border-radius: 12px;
   align-items: center;
   gap: 16px;
@@ -1144,8 +1145,8 @@ body {
 }
 
 .tracks-sidebar .track-item.active, .tracks-sidebar .track-item:hover {
-  background-color: #f0f7ff;
-  border-color: #0070f3;
+  border-color: var(--brand-color);
+  background-color: var(--bg-primary);
 }
 
 .puzzle-workspace {
@@ -1156,7 +1157,7 @@ body {
 }
 
 .puzzle-workspace .workspace-card {
-  background: #fff;
+  background: var(--bg-primary);
   border-radius: 16px;
   width: 100%;
   max-width: 680px;
@@ -1172,10 +1173,10 @@ body {
 }
 
 .puzzle-workspace .option-btn {
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
   text-align: left;
   cursor: pointer;
-  background: #fff;
-  border: 1px solid #ced4da;
   border-radius: 8px;
   padding: 16px;
   font-weight: 500;
@@ -1183,18 +1184,18 @@ body {
 }
 
 .puzzle-workspace .option-btn:hover {
-  background: #f8f9fa;
+  background: var(--bg-secondary);
 }
 
 .puzzle-workspace .option-btn.correct {
+  background: var(--bg-secondary);
   color: #155724;
-  background: #d4edda;
   border-color: #28a745;
 }
 
 .puzzle-workspace .option-btn.incorrect {
+  background: var(--bg-secondary);
   color: #721c24;
-  background: #f8d7da;
   border-color: #dc3545;
 }
 
