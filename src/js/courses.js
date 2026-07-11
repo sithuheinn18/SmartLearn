@@ -2,90 +2,103 @@ import netlifyIdentity from 'netlify-identity-widget';
 
 // ==========================================
 // 🛠️ DEVELOPMENT CONTROLS
-// Set this to true to mock a logged-in user and style the page freely!
-// Set this to false before you commit and push to production.
 const DESIGN_MODE = true; 
 // ==========================================
 
-const puzzleDatabase = {
-    logic: {
-        title: "Deductive Syllogisms",
-        question: "If all A are B, and some B are C... Are all A definitely C?",
-        options: [
-            { text: "Yes, this logic naturally compiles.", correct: false },
-            { text: "No, it is structurally impossible.", correct: false },
-            { text: "Is it impossible to tell precisely without data mapping.", correct: true }
-        ],
-        explanation: "🧠 **Intuition Matrix:** Think of circles (Venn Diagrams). All of Circle A sits securely inside Circle B. Circle C overlaps with *some* parts of Circle B, but it doesn't necessarily have to touch Circle A at all! Hence, it is impossible to determine without further parameter parameters."
+// 📦 This variable will securely store our streaming JSON array elements
+let courseDatabase = [];
+
+const gridContainer = document.getElementById('coursesGrid');
+const searchInput = document.getElementById('catalogSearch');
+const resultCountText = document.getElementById('resultCount');
+
+//  Asynchronous Data Loader Engine
+
+async function loadCourseDatabase() {
+    try {
+        // Pulling directly from the root served dist environment path
+        const response = await fetch('/courses.json');
+        if (!response.ok) throw new Error(`HTTP tracking failure. Status: ${response.status}`);
+        
+        courseDatabase = await response.json();
+        performSearch(""); // Paint the grid layouts instantly!
+    } catch (error) {
+        console.error("Error fetching master course dataset:", error);
+        gridContainer.innerHTML = `<div class="grid-message">Failed to process core data stream rules.</div>`;
     }
-};
-
-const workspaceElement = document.getElementById('activePuzzleCard');
-
-function initWorkspace() {
-    // 🚀 If Design Mode is active, bypass the Netlify authentication shield completely
-    if (DESIGN_MODE) {
-        console.log("🛠️ SmartLearn: Design Mode Active. Auth shield bypassed.");
-        renderActivePuzzle('logic');
-        return;
-    }
-
-    // Normal secure authentication pipeline
-    const user = netlifyIdentity.currentUser();
-    if (!user) {
-        workspaceElement.innerHTML = `
-            <div class="gate-fallback">
-                <h3>🔒 Secure Verification Required</h3>
-                <p>Please authenticate or register your profile matrix via the header links to access active puzzles.</p>
-            </div>
-        `;
-        return;
-    }
-
-    renderActivePuzzle('logic');
 }
 
-function renderActivePuzzle(trackKey) {
-    const puzzle = puzzleDatabase[trackKey];
-    if (!puzzle) return;
+function initWorkspace() {
+    if (!DESIGN_MODE) {
+        const user = netlifyIdentity.currentUser();
+        if (!user) {
+            gridContainer.innerHTML = `
+                <div class="grid-message">
+                    <h3>🔒 Secure Verification Required</h3>
+                    <p>Please authenticate or register your profile matrix to browse your course files.</p>
+                </div>
+            `;
+            if (searchInput) searchInput.disabled = true;
+            return;
+        }
+    }
 
-    workspaceElement.innerHTML = `
-        <div class="puzzle-header">
-            <span class="category-tag">${trackKey.toUpperCase()} // MODULE 01</span>
-            <h2>${puzzle.title}</h2>
-        </div>
-        <div class="puzzle-content">
-            <p class="question-text">${puzzle.question}</p>
-        </div>
-        <div class="puzzle-options">
-            ${puzzle.options.map((opt, idx) => `
-                <button class="option-btn" data-index="${idx}">${opt.text}</button>
-            `).join('')}
-        </div>
-        <div class="feedback-panel hidden" id="feedbackPanel"></div>
-    `;
+    if (searchInput) searchInput.disabled = false;
+    
+    // 🔥 Fire the JSON ingestion runtime instead of referencing raw static memory arrays
+    loadCourseDatabase(); 
+}
 
-    workspaceElement.querySelectorAll('.option-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => handleAnswerSelection(e, puzzle));
+// --- RENDERING PARSER AND STRUCTURAL FILTERS ---
+function performSearch(searchQuery = "") {
+    const cleanedQuery = searchQuery.toLowerCase().trim();
+    
+    const filtered = courseDatabase.filter(course => 
+        course.title.toLowerCase().includes(cleanedQuery) ||
+        course.category.toLowerCase().includes(cleanedQuery) ||
+        course.description.toLowerCase().includes(cleanedQuery)
+    );
+
+    renderGridCards(filtered);
+}
+
+function renderGridCards(coursesArray) {
+    if (resultCountText) {
+        resultCountText.innerText = `Showing ${coursesArray.length} track paths available`;
+    }
+
+    if (coursesArray.length === 0) {
+        gridContainer.innerHTML = `<div class="grid-message">No learning tracks match your query parameter strings.</div>`;
+        return;
+    }
+
+    gridContainer.innerHTML = coursesArray.map(course => `
+        <article class="course-card">
+            <div class="card-icon-banner">${course.icon}</div>
+            <div class="card-body">
+                <span class="card-badge">${course.category}</span>
+                <h3>${course.title}</h3>
+                <p>${course.description}</p>
+                <div class="card-footer">
+                    <span class="module-count">📋 ${course.modules} Lessons</span>
+                    <button class="btn-launch" data-id="${course.id}">Launch Track</button>
+                </div>
+            </div>
+        </article>
+    `).join('');
+
+    gridContainer.querySelectorAll('.btn-launch').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            alert(`Initializing Course Workspace Module Node ID: "${e.target.dataset.id}"`);
+        });
     });
 }
 
-function handleAnswerSelection(e, puzzle) {
-    const selectedIdx = parseInt(e.target.dataset.index);
-    const chosenOption = puzzle.options[selectedIdx];
-    const feedbackPanel = document.getElementById('feedbackPanel');
-
-    document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('incorrect', 'correct'));
-
-    if (chosenOption.correct) {
-        e.target.classList.add('correct');
-        feedbackPanel.innerHTML = `<div class="alert success">✨ **Correct Execution!** <br>${puzzle.explanation}</div>`;
-    } else {
-        e.target.classList.add('incorrect');
-        feedbackPanel.innerHTML = `<div class="alert warning">❌ **Incorrect Conclusion.** <br>${puzzle.explanation}</div>`;
-    }
-    
-    feedbackPanel.classList.remove('hidden');
+// --- LIVE SEARCH INPUT EVENT LISTENER ---
+if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+    });
 }
 
 netlifyIdentity.on('login', () => initWorkspace());

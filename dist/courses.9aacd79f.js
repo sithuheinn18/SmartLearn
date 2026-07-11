@@ -714,54 +714,91 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"2xiTU":[function(require,module,exports,__globalThis) {
-const searchInput = document.getElementById('catalogSearch');
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _netlifyIdentityWidget = require("netlify-identity-widget");
+var _netlifyIdentityWidgetDefault = parcelHelpers.interopDefault(_netlifyIdentityWidget);
+// ==========================================
+// 🛠️ DEVELOPMENT CONTROLS
+const DESIGN_MODE = true;
+// ==========================================
+// 📦 This variable will securely store our streaming JSON array elements
+let courseDatabase = [];
 const gridContainer = document.getElementById('coursesGrid');
+const searchInput = document.getElementById('catalogSearch');
 const resultCountText = document.getElementById('resultCount');
-// --- ASYNCHRONOUS API DATA FETCH ENGINE ---
-async function fetchAndRenderCourses(searchQuery = "") {
+//  Asynchronous Data Loader Engine
+async function loadCourseDatabase() {
     try {
-        gridContainer.innerHTML = `Searching data arrays...`;
-        // Fetch from local Netlify proxy router
-        const response = await fetch(`/.netlify/functions/get-courses?search=${encodeURIComponent(searchQuery)}`);
-        if (!response.ok) throw new Error("Network pipeline transmission failure.");
-        const courses = await response.json();
-        renderGridCards(courses);
-    } catch (err) {
-        console.error(err);
-        gridContainer.innerHTML = `Error loading courses catalog workspace.`;
+        // Pulling directly from the root served dist environment path
+        const response = await fetch('/courses.json');
+        if (!response.ok) throw new Error(`HTTP tracking failure. Status: ${response.status}`);
+        courseDatabase = await response.json();
+        performSearch(""); // Paint the grid layouts instantly!
+    } catch (error) {
+        console.error("Error fetching master course dataset:", error);
+        gridContainer.innerHTML = `<div class="grid-message">Failed to process core data stream rules.</div>`;
     }
 }
-// --- RENDERING PARSER MATRIX ---
+function initWorkspace() {
+    if (!DESIGN_MODE) {
+        const user = (0, _netlifyIdentityWidgetDefault.default).currentUser();
+        if (!user) {
+            gridContainer.innerHTML = `
+                <div class="grid-message">
+                    <h3>\u{1F512} Secure Verification Required</h3>
+                    <p>Please authenticate or register your profile matrix to browse your course files.</p>
+                </div>
+            `;
+            if (searchInput) searchInput.disabled = true;
+            return;
+        }
+    }
+    if (searchInput) searchInput.disabled = false;
+    // 🔥 Fire the JSON ingestion runtime instead of referencing raw static memory arrays
+    loadCourseDatabase();
+}
+// --- RENDERING PARSER AND STRUCTURAL FILTERS ---
+function performSearch(searchQuery = "") {
+    const cleanedQuery = searchQuery.toLowerCase().trim();
+    const filtered = courseDatabase.filter((course)=>course.title.toLowerCase().includes(cleanedQuery) || course.category.toLowerCase().includes(cleanedQuery) || course.description.toLowerCase().includes(cleanedQuery));
+    renderGridCards(filtered);
+}
 function renderGridCards(coursesArray) {
-    resultCountText.innerText = `Showing ${coursesArray.length} available course tracks`;
+    if (resultCountText) resultCountText.innerText = `Showing ${coursesArray.length} track paths available`;
     if (coursesArray.length === 0) {
-        gridContainer.innerHTML = `No tracks found matching those keywords. Try another track!`;
+        gridContainer.innerHTML = `<div class="grid-message">No learning tracks match your query parameter strings.</div>`;
         return;
     }
     gridContainer.innerHTML = coursesArray.map((course)=>`
-        
-            ${course.icon}
-            
-                ${course.category}
-                ${course.title}
-                ${course.description}
-                
-                    \u{1F4CB} ${course.modules} Modules
-                    Start Track
-                
-            
-        
+        <article class="course-card">
+            <div class="card-icon-banner">${course.icon}</div>
+            <div class="card-body">
+                <span class="card-badge">${course.category}</span>
+                <h3>${course.title}</h3>
+                <p>${course.description}</p>
+                <div class="card-footer">
+                    <span class="module-count">\u{1F4CB} ${course.modules} Lessons</span>
+                    <button class="btn-launch" data-id="${course.id}">Launch Track</button>
+                </div>
+            </div>
+        </article>
     `).join('');
+    gridContainer.querySelectorAll('.btn-launch').forEach((btn)=>{
+        btn.addEventListener('click', (e)=>{
+            alert(`Initializing Course Workspace Module Node ID: "${e.target.dataset.id}"`);
+        });
+    });
 }
-// --- LIVE INPUT SEARCH STREAM LISTENERS ---
+// --- LIVE SEARCH INPUT EVENT LISTENER ---
 if (searchInput) searchInput.addEventListener('input', (e)=>{
-    fetchAndRenderCourses(e.target.value);
+    performSearch(e.target.value);
 });
-// Initial baseline paint load
+(0, _netlifyIdentityWidgetDefault.default).on('login', ()=>initWorkspace());
+(0, _netlifyIdentityWidgetDefault.default).on('logout', ()=>initWorkspace());
 document.addEventListener('DOMContentLoaded', ()=>{
-    fetchAndRenderCourses("");
+    setTimeout(initWorkspace, 300);
 });
 
-},{}]},["b8BeG","2xiTU"], "2xiTU", "parcelRequirefc40", {})
+},{"netlify-identity-widget":"aE0Xm","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["b8BeG","2xiTU"], "2xiTU", "parcelRequirefc40", {})
 
 //# sourceMappingURL=courses.9aacd79f.js.map

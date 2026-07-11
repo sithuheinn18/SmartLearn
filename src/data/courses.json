@@ -1,0 +1,26 @@
+[
+  { 
+    "id": "logic", 
+    "title": "Formal Logic & Deduction", 
+    "category": "Philosophy", 
+    "modules": 12, 
+    "icon": "🧩", 
+    "description": "Master syllogisms, truth matrices, and valid conditional proofs." 
+  },
+  { 
+    "id": "math", 
+    "title": "Visual Mathematics", 
+    "category": "Mathematics", 
+    "modules": 8, 
+    "icon": "📈", 
+    "description": "Understand calculus and linear transformations through clean geometric animations." 
+  },
+  { 
+    "id": "physics", 
+    "title": "Classical Mechanics Intuition", 
+    "category": "Physics", 
+    "modules": 15, 
+    "icon": "✨", 
+    "description": "Build physical mental models of inertia, momentum, and kinetic tracking layouts." 
+  }
+]

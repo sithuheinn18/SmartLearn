@@ -1,11 +1,4 @@
-<!-- <header class="site-header">
-        <div class="header-container">
-            <div class="logo">
-                <span class="logo-icon">💡</span>
-            </div>
-        </div>
-    </header>
-<!DOCTYPE html> --><!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html><html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartLearn — Active Workspace</title>
@@ -18,52 +11,21 @@
             <div class="logo">
                 <span class="logo-icon">💡</span>
             </div>
-            <div class="auth-buttons-desktop">
-                </div>
+            <div class="nav-search-wrapper">
+                <input type="search" id="catalogSearch" placeholder="Search tracks (e.g., Logic, Math, Physics)..." autocomplete="off">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="auth-buttons-desktop"></div>
         </div>
     </header>
 
-    <main class="workspace-layout">
-        
-        <aside class="tracks-sidebar">
-            <div class="sidebar-header">
-                <h3>Your Learning Tracks</h3>
-                <span class="progress-badge">33% Completed</span>
-            </div>
-            
-            <nav class="track-links">
-                <button class="track-item active" data-track="logic">
-                    <span class="icon">🧩</span>
-                    <div class="track-meta">
-                        <h4>Formal Logic &amp; Deduction</h4>
-                        <p>Lesson 1 of 3 active</p>
-                    </div>
-                </button>
-                
-                <button class="track-item" data-track="math">
-                    <span class="icon">📈</span>
-                    <div class="track-meta">
-                        <h4>Visual Mathematics</h4>
-                        <p>Locked until tracking clear</p>
-                    </div>
-                </button>
+    <main class="catalog-container">
+        <div class="catalog-header">
+            <h2>Explore Active Tracks</h2>
+            <p id="resultCount" style="color: gray; margin-top: 4px; font-size: .9rem">Loading dynamic arrays...</p>
+        </div>
 
-                <button class="track-item" data-track="physics">
-                    <span class="icon">✨</span>
-                    <div class="track-meta">
-                        <h4>Classical Mechanics Intuition</h4>
-                        <p>Locked until tracking clear</p>
-                    </div>
-                </button>
-            </nav>
-        </aside>
-
-        <section class="puzzle-workspace">
-            <div class="workspace-card" id="activePuzzleCard">
-                <div class="puzzle-loading">Synchronizing cognitive matrices...</div>
-            </div>
-        </section>
-
+        <div class="courses-grid" id="coursesGrid"></div>
     </main>
 
     <div id="netlify-auth-root"></div>

@@ -182,6 +182,39 @@ body {
   transition: all .3s cubic-bezier(.4, 0, .2, 1);
 }
 
+.site-header .nav-search-wrapper {
+  flex: 1;
+  max-width: 480px;
+  margin: 0 16px;
+  position: relative;
+}
+
+.site-header .nav-search-wrapper input {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  width: 100%;
+  color: var(--text-main);
+  border-radius: 20px;
+  padding: 10px 16px 10px 38px;
+  font-size: .9rem;
+  transition: all .2s;
+}
+
+.site-header .nav-search-wrapper input:focus {
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 3px rgba(var(--brand-color), .15);
+  outline: none;
+}
+
+.site-header .nav-search-wrapper .search-icon {
+  pointer-events: none;
+  opacity: .6;
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+}
+
 @media (width <= 768px) {
   .site-header .auth-buttons-desktop {
     display: none;
@@ -1104,102 +1137,110 @@ body {
   }
 }
 
-.workspace-layout {
-  background-color: var(--bg-secondary);
-  grid-template-columns: 320px 1fr;
-  min-height: calc(100vh - 70px);
+.catalog-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.courses-grid {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
   display: grid;
 }
 
-@media (width <= 768px) {
-  .workspace-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-.tracks-sidebar {
-  background-color: var(--bg-primary);
-  border-right: 1px solid var(--border-color);
-  padding: 24px;
-}
-
-.tracks-sidebar .track-links {
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 24px;
-  display: flex;
-}
-
-.tracks-sidebar .track-item {
-  border: 1px solid var(--border-color);
-  text-align: left;
-  cursor: pointer;
-  color: var(--text-main);
-  background: none;
-  border-radius: 12px;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  transition: all .2s;
-  display: flex;
-}
-
-.tracks-sidebar .track-item.active, .tracks-sidebar .track-item:hover {
-  border-color: var(--brand-color);
-  background-color: var(--bg-primary);
-}
-
-.puzzle-workspace {
-  justify-content: center;
-  align-items: flex-start;
-  padding: 40px;
-  display: flex;
-}
-
-.puzzle-workspace .workspace-card {
+.course-card {
   background: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
-  width: 100%;
-  max-width: 680px;
-  padding: 40px;
-  box-shadow: 0 4px 20px #0000000d;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 4px 12px #00000008;
 }
 
-.puzzle-workspace .puzzle-options {
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px #00000014;
+}
+
+.course-card .card-icon-banner {
+  background: var(--bg-secondary);
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  padding: 32px;
+  font-size: 2.5rem;
+}
+
+.course-card .card-body {
   flex-direction: column;
-  gap: 12px;
-  margin: 24px 0;
+  flex: 1;
+  padding: 20px;
   display: flex;
 }
 
-.puzzle-workspace .option-btn {
-  border: 1px solid var(--border-color);
-  background: var(--bg-primary);
-  text-align: left;
-  cursor: pointer;
-  border-radius: 8px;
-  padding: 16px;
+.course-card .card-body .card-badge {
+  text-transform: uppercase;
+  color: var(--brand-color);
+  margin-bottom: 8px;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.course-card .card-body h3 {
+  color: var(--text-main);
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+}
+
+.course-card .card-body p {
+  color: var(--text-main);
+  opacity: .8;
+  flex: 1;
+  margin-bottom: 20px;
+  font-size: .88rem;
+  line-height: 1.5;
+}
+
+.course-card .card-footer {
+  border-top: 1px solid var(--border-color);
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+}
+
+.course-card .card-footer .module-count {
+  color: var(--text-main);
+  opacity: .7;
+  font-size: .85rem;
   font-weight: 500;
-  transition: background .2s;
 }
 
-.puzzle-workspace .option-btn:hover {
-  background: var(--bg-secondary);
+.course-card .card-footer .btn-launch {
+  background: var(--brand-color);
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  transition: opacity .2s;
 }
 
-.puzzle-workspace .option-btn.correct {
-  background: var(--bg-secondary);
-  color: #155724;
-  border-color: #28a745;
+.course-card .card-footer .btn-launch:hover {
+  opacity: .9;
 }
 
-.puzzle-workspace .option-btn.incorrect {
-  background: var(--bg-secondary);
-  color: #721c24;
-  border-color: #dc3545;
-}
-
-.hidden {
-  display: none !important;
+.grid-message {
+  text-align: center;
+  color: var(--text-main);
+  opacity: .7;
+  grid-column: 1 / -1;
+  padding: 60px 20px;
+  font-size: 1.1rem;
 }
 /*# sourceMappingURL=test.b10d73a7.css.map */

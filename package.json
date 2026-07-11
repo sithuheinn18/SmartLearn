@@ -13,10 +13,14 @@
   "devDependencies": {
     "@parcel/transformer-sass": "^2.16.4",
     "buffer": "^6.0.3",
-    "parcel": "^2.16.4"
+    "parcel": "^2.16.4",
+    "parcel-reporter-static-files-copy": "^1.5.3"
   },
   "dependencies": {
     "@netlify/identity": "^1.2.0",
     "netlify-identity-widget": "^2.0.3"
+  },
+  "staticFiles": {
+    "staticPath": "src/data/courses.json"
   }
 }

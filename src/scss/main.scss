@@ -215,6 +215,38 @@ body {
         }
     }
 
+    .nav-search-wrapper {
+        position: relative;
+        flex: 1;
+        max-width: 480px;
+        margin: 0 16px;
+        
+        input {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            border: 1px solid $border-color;
+            border-radius: 20px;
+            background-color: $bg-secondary;
+            color: $text-main;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            
+            &:focus {
+                outline: none;
+                border-color: $brand-color;
+                box-shadow: 0 0 0 3px rgba($brand-color, 0.15);
+            }
+        }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+    }
+
     // ==========================================
     // MOBILE LAYER CONSTRAINTS (@media query)
     // ==========================================
@@ -1160,91 +1192,89 @@ body {
     }
 }
 
-/* --- WORKSPACE CORE APPARATUS --- */
-.workspace-layout {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    min-height: calc(100vh - 70px);
-    background-color: $bg-secondary;
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-    }
-}
-
-.tracks-sidebar {
-    background-color: $bg-primary;
-    border-right: 1px solid $border-color;
-    padding: 24px;
-
-    .track-links {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 24px;
-    }
-
-    .track-item {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 16px;
-        background: none;
-        border: 1px solid $border-color;
-        border-radius: 12px;
-        text-align: left;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        color: $text-main;
-
-        &.active, &:hover {
-            border-color: $brand-color;
-            background-color: $bg-primary;
-        }
-    }
-}
-
 // ----------------------------------------------------
 
 // Stylings for courses page
 
-.puzzle-workspace {
-    padding: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+/* --- DYNAMIC COURSE CATALOG CONTAINER --- */
+.catalog-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
 
-    .workspace-card {
-        background: $bg-primary;
-        border-radius: 16px;
-        padding: 40px;
-        width: 100%;
-        max-width: 680px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+/* 📊 AUTOMATED GRID ENGINE (Coursera Inspired Layout) */
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* 🎴 MATERIALIZED INDIVIDUAL CONTENT CARDS */
+.course-card {
+    background: $bg-primary;
+    border: 1px solid $border-color;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
     }
 
-    .puzzle-options {
+    .card-icon-banner {
+        background: $bg-secondary;
+        padding: 32px;
+        font-size: 2.5rem;
+        text-align: center;
+        border-bottom: 1px solid $border-color;
+    }
+
+    .card-body {
+        padding: 20px;
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        margin: 24px 0;
+        flex: 1;
+
+        .card-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: $brand-color;
+            margin-bottom: 8px;
+        }
+
+        h3 { margin: 0 0 8px 0; font-size: 1.15rem; color: $text-main; }
+        p { color: $text-main; opacity: 0.8; font-size: 0.88rem; line-height: 1.5; flex: 1; margin-bottom: 20px; }
     }
 
-    .option-btn {
-        padding: 16px;
-        color: $text-main;
-        border: 1px solid $border-color;
-        border-radius: 8px;
-        background: $bg-primary;
-        text-align: left;
-        cursor: pointer;
-        font-weight: 500;
-        transition: background 0.2s;
+    .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid $border-color;
+        padding-top: 16px;
+        margin-top: auto;
 
-        &:hover { background: $bg-secondary; }
-        &.correct { background: $bg-secondary; border-color: #28a745; color: #155724; }
-        &.incorrect { background: $bg-secondary; border-color: #dc3545; color: #721c24; }
+        .module-count { font-size: 0.85rem; color: $text-main; opacity: 0.7; font-weight: 500; }
+        .btn-launch {
+            background: $brand-color; color: white; border: none; padding: 8px 16px;
+            border-radius: 8px; font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+            &:hover { opacity: 0.9; }
+        }
     }
 }
 
-.hidden { display: none !important; }
+.grid-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: $text-main;
+    opacity: 0.7;
+    font-size: 1.1rem;
+}
