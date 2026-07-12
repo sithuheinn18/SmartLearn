@@ -89,7 +89,10 @@ function renderGridCards(coursesArray) {
 
     gridContainer.querySelectorAll('.btn-launch').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            alert(`Initializing Course Workspace Module Node ID: "${e.target.dataset.id}"`);
+            const courseId = e.target.dataset.id;
+            
+            // Redirect securely to the workspace page, passing the track ID as a URL parameter
+            window.location.href = `workspace.html?course=${courseId}`;
         });
     });
 }

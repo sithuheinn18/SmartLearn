@@ -207,7 +207,7 @@
       });
     }
   }
-})({"b8BeG":[function(require,module,exports,__globalThis) {
+})({"89qeP":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
@@ -215,7 +215,7 @@ var HMR_SERVER_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "439701173a9199ea";
 var HMR_USE_SSE = false;
-module.bundle.HMR_BUNDLE_ID = "0a6650129aacd79f";
+module.bundle.HMR_BUNDLE_ID = "b68f7c41ecf1db2d";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_SERVER_PORT, HMR_ENV_HASH, HMR_SECURE, HMR_USE_SSE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -713,7 +713,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
     }
 }
 
-},{}],"2xiTU":[function(require,module,exports,__globalThis) {
+},{}],"7MKoj":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _netlifyIdentityWidget = require("netlify-identity-widget");
 var _netlifyIdentityWidgetDefault = parcelHelpers.interopDefault(_netlifyIdentityWidget);
@@ -721,86 +721,191 @@ var _netlifyIdentityWidgetDefault = parcelHelpers.interopDefault(_netlifyIdentit
 // 🛠️ DEVELOPMENT CONTROLS
 const DESIGN_MODE = true;
 // ==========================================
-// 📦 This variable will securely store our streaming JSON array elements
-let courseDatabase = [];
-const gridContainer = document.getElementById('coursesGrid');
-const searchInput = document.getElementById('catalogSearch');
-const resultCountText = document.getElementById('resultCount');
-//  Asynchronous Data Loader Engine
-async function loadCourseDatabase() {
-    try {
-        // Pulling directly from the root served dist environment path
-        const response = await fetch('/courses.json');
-        if (!response.ok) throw new Error(`HTTP tracking failure. Status: ${response.status}`);
-        courseDatabase = await response.json();
-        performSearch(""); // Paint the grid layouts instantly!
-    } catch (error) {
-        console.error("Error fetching master course dataset:", error);
-        gridContainer.innerHTML = `<div class="grid-message">Failed to process core data stream rules.</div>`;
-    }
-}
-function initWorkspace() {
-    if (!DESIGN_MODE) {
-        const user = (0, _netlifyIdentityWidgetDefault.default).currentUser();
-        if (!user) {
-            gridContainer.innerHTML = `
-                <div class="grid-message">
-                    <h3>\u{1F512} Secure Verification Required</h3>
-                    <p>Please authenticate or register your profile matrix to browse your course files.</p>
-                </div>
-            `;
-            if (searchInput) searchInput.disabled = true;
-            return;
-        }
-    }
-    if (searchInput) searchInput.disabled = false;
-    // 🔥 Fire the JSON ingestion runtime instead of referencing raw static memory arrays
-    loadCourseDatabase();
-}
-// --- RENDERING PARSER AND STRUCTURAL FILTERS ---
-function performSearch(searchQuery = "") {
-    const cleanedQuery = searchQuery.toLowerCase().trim();
-    const filtered = courseDatabase.filter((course)=>course.title.toLowerCase().includes(cleanedQuery) || course.category.toLowerCase().includes(cleanedQuery) || course.description.toLowerCase().includes(cleanedQuery));
-    renderGridCards(filtered);
-}
-function renderGridCards(coursesArray) {
-    if (resultCountText) resultCountText.innerText = `Showing ${coursesArray.length} track paths available`;
-    if (coursesArray.length === 0) {
-        gridContainer.innerHTML = `<div class="grid-message">No learning tracks match your query parameter strings.</div>`;
+let activeCourseData = null;
+let currentPuzzleIndex = 0;
+let score = 0; // Track successful compilation runs!
+const titleElement = document.getElementById('workspaceCourseTitle');
+const cardElement = document.getElementById('activePuzzleCard');
+document.addEventListener('DOMContentLoaded', ()=>{
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeCourseId = urlParams.get('course');
+    if (!activeCourseId) {
+        showError("No learning track parameter specified.");
         return;
     }
-    gridContainer.innerHTML = coursesArray.map((course)=>`
-        <article class="course-card">
-            <div class="card-icon-banner">${course.icon}</div>
-            <div class="card-body">
-                <span class="card-badge">${course.category}</span>
-                <h3>${course.title}</h3>
-                <p>${course.description}</p>
-                <div class="card-footer">
-                    <span class="module-count">\u{1F4CB} ${course.modules} Lessons</span>
-                    <button class="btn-launch" data-id="${course.id}">Launch Track</button>
+    initWorkspace(activeCourseId);
+});
+function initWorkspace(courseId) {
+    if (!DESIGN_MODE && !(0, _netlifyIdentityWidgetDefault.default).currentUser()) {
+        showError("\uD83D\uDD12 Secure Verification Required.");
+        return;
+    }
+    loadWorkspaceData(courseId);
+}
+async function loadWorkspaceData(courseId) {
+    try {
+        const response = await fetch('/courses.json');
+        if (!response.ok) throw new Error(`HTTP status: ${response.status}`);
+        const courseDatabase = await response.json();
+        activeCourseData = courseDatabase.find((course)=>course.id === courseId);
+        if (!activeCourseData) {
+            showError("The course track does not exist.");
+            return;
+        }
+        if (titleElement) titleElement.innerText = activeCourseData.title;
+        renderIntroScreen();
+    } catch (error) {
+        console.error(error);
+        showError("Failed to synchronize active learning tracks.");
+    }
+}
+function renderIntroScreen() {
+    if (!cardElement || !activeCourseData) return;
+    cardElement.innerHTML = `
+        <div class="card-animator-wrapper">
+            <div class="puzzle-header">
+                <span class="category-tag">${activeCourseData.category.toUpperCase()} // WELCOME</span>
+                <h2>${activeCourseData.title} Arena</h2>
+            </div>
+            <div class="puzzle-content">
+                <p class="track-desc">${activeCourseData.description}</p>
+                <div class="module-status-box">
+                    <p>\u{1F4CB} Ready to begin? This track contains active puzzle modules loaded straight from data arrays.</p>
                 </div>
             </div>
-        </article>
-    `).join('');
-    gridContainer.querySelectorAll('.btn-launch').forEach((btn)=>{
-        btn.addEventListener('click', (e)=>{
-            const courseId = e.target.dataset.id;
-            // Redirect securely to the workspace page, passing the track ID as a URL parameter
-            window.location.href = `workspace.html?course=${courseId}`;
-        });
+            <div class="puzzle-options">
+                <button class="action-btn-primary" id="startLessonBtn">Initialize First Lesson</button>
+            </div>
+        </div>
+    `;
+    document.getElementById('startLessonBtn').addEventListener('click', ()=>{
+        currentPuzzleIndex = 0;
+        score = 0;
+        renderActivePuzzle();
     });
 }
-// --- LIVE SEARCH INPUT EVENT LISTENER ---
-if (searchInput) searchInput.addEventListener('input', (e)=>{
-    performSearch(e.target.value);
-});
-(0, _netlifyIdentityWidgetDefault.default).on('login', ()=>initWorkspace());
-(0, _netlifyIdentityWidgetDefault.default).on('logout', ()=>initWorkspace());
-document.addEventListener('DOMContentLoaded', ()=>{
-    setTimeout(initWorkspace, 300);
-});
+function renderActivePuzzle() {
+    const puzzles = activeCourseData.puzzles;
+    if (!puzzles || puzzles.length === 0) {
+        cardElement.innerHTML = `<p class="grid-message">No active puzzles uploaded for this track yet.</p>`;
+        return;
+    }
+    const puzzle = puzzles[currentPuzzleIndex];
+    // 📊 Dynamic Calculation: Fill progress accurately based on current card slot position
+    const percentComplete = Math.round(currentPuzzleIndex / puzzles.length * 100);
+    cardElement.innerHTML = `
+        <div class="card-animator-wrapper">
+            <div class="puzzle-header">
+                <div class="progress-meta">
+                    <span class="category-tag">${activeCourseData.category.toUpperCase()} // QUESTION ${currentPuzzleIndex + 1} OF ${puzzles.length}</span>
+                    <span class="progress-percentage-text" id="progressPercentText">${percentComplete}% Completed</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                </div>
+                <h2>${puzzle.title}</h2>
+            </div>
+            <div class="puzzle-content">
+                <p class="question-text">${puzzle.question}</p>
+            </div>
+            <div class="puzzle-options">
+                ${puzzle.options.map((opt, idx)=>`
+                    <button class="option-btn" data-index="${idx}">${opt.text}</button>
+                `).join('')}
+            </div>
+            <div class="feedback-panel hidden" id="feedbackPanel"></div>
+            <div class="action-footer hidden" id="actionFooter">
+                <button class="action-btn-primary" id="nextQuestionBtn">
+                    ${currentPuzzleIndex === puzzles.length - 1 ? "Complete Quiz Evaluation" : "Proceed to Next Question \u27A1\uFE0F"}
+                </button>
+            </div>
+        </div>
+    `;
+    // Trigger initial question animation slide
+    const fillElement = document.getElementById('progressBarFill');
+    if (fillElement) requestAnimationFrame(()=>{
+        fillElement.style.width = `${percentComplete}%`;
+    });
+    cardElement.querySelectorAll('.option-btn').forEach((btn)=>{
+        btn.addEventListener('click', (e)=>handleAnswerSelection(e, puzzle));
+    });
+    // 🔄 PROGRESSION ROUTER LOGIC
+    document.getElementById('nextQuestionBtn').addEventListener('click', ()=>{
+        if (currentPuzzleIndex === puzzles.length - 1) // If it's the final question, transition cleanly to the results matrix dashboard
+        renderQuizResults();
+        else {
+            // Otherwise, advance internal trackers and render the next card array
+            currentPuzzleIndex++;
+            renderActivePuzzle();
+        }
+    });
+}
+function handleAnswerSelection(e, puzzle) {
+    const selectedIdx = parseInt(e.target.dataset.index);
+    const chosenOption = puzzle.options[selectedIdx];
+    const feedbackPanel = document.getElementById('feedbackPanel');
+    const actionFooter = document.getElementById('actionFooter');
+    cardElement.querySelectorAll('.option-btn').forEach((btn)=>{
+        btn.disabled = true;
+        btn.classList.remove('incorrect', 'correct');
+    });
+    if (chosenOption.correct) {
+        e.target.classList.add('correct');
+        score++;
+        feedbackPanel.className = "feedback-panel success";
+        feedbackPanel.innerHTML = `
+            <strong class="feedback-title">\u{2728} Correct Answer!</strong>
+            <p class="feedback-explanation">${puzzle.explanation}</p>
+        `;
+    } else {
+        e.target.classList.add('incorrect');
+        feedbackPanel.className = "feedback-panel warning";
+        feedbackPanel.innerHTML = `
+            <strong class="feedback-title">\u{274C} Incorrect Conclusion.</strong>
+            <p class="feedback-explanation">${puzzle.explanation}</p>
+        `;
+    }
+    // 🔥 Dynamic Finish: If this is the last question, snap the progress metrics instantly to 100%
+    if (currentPuzzleIndex === activeCourseData.puzzles.length - 1) {
+        const fillElement = document.getElementById('progressBarFill');
+        const textElement = document.getElementById('progressPercentText');
+        if (fillElement) fillElement.style.width = "100%";
+        if (textElement) textElement.innerText = "100% Completed";
+    }
+    feedbackPanel.classList.remove('hidden');
+    actionFooter.classList.remove('hidden');
+}
+// 🏆 NEW: Completion Summary Frame Component
+function renderQuizResults() {
+    const finalPercent = Math.round(score / activeCourseData.puzzles.length * 100);
+    cardElement.innerHTML = `
+        <div class="card-animator-wrapper">
+            <div class="puzzle-header">
+                <span class="category-tag">${activeCourseData.category.toUpperCase()} // EVALUATION MATRIX SECURED</span>
+                <h2>Track Results Summary</h2>
+            </div>
+            <div class="puzzle-content">
+                <div class="score-display-shield">
+                    <span class="huge-score-text">${finalPercent}%</span>
+                    <p>Calculated score mapping: <strong>${score} correct matrices</strong> out of ${activeCourseData.puzzles.length} configurations tested.</p>
+                </div>
+            </div>
+            <div class="puzzle-options">
+                <button class="action-btn-primary" id="retryTrackBtn">Restart Track Puzzles</button>
+                <a href="courses.html" class="action-btn-secondary" style="text-align: center; text-decoration: none; display: block;">Return to Main Course Catalog</a>
+            </div>
+        </div>
+    `;
+    document.getElementById('retryTrackBtn').addEventListener('click', ()=>{
+        currentPuzzleIndex = 0;
+        score = 0;
+        renderActivePuzzle();
+    });
+}
+function showError(message) {
+    if (cardElement) cardElement.innerHTML = `<div class="grid-message"><p>${message}</p></div>`;
+}
 
-},{"netlify-identity-widget":"aE0Xm","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["b8BeG","2xiTU"], "2xiTU", "parcelRequirefc40", {})
+},{"netlify-identity-widget":"aE0Xm","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["89qeP","7MKoj"], "7MKoj", "parcelRequirefc40", {})
 
-//# sourceMappingURL=courses.9aacd79f.js.map
+//# sourceMappingURL=workspace.ecf1db2d.js.map

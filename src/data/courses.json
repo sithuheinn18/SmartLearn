@@ -5,7 +5,29 @@
     "category": "Philosophy", 
     "modules": 12, 
     "icon": "🧩", 
-    "description": "Master syllogisms, truth matrices, and valid conditional proofs." 
+    "description": "Master syllogisms, truth matrices, and valid conditional proofs.",
+    "puzzles": [
+      {
+        "title": "Deductive Syllogisms",
+        "question": "If all A are B, and some B are C... Are all A definitely C?",
+        "options": [
+          { "text": "Yes, this logic naturally compiles.", "correct": false },
+          { "text": "No, it is structurally impossible.", "correct": false },
+          { "text": "It is impossible to tell precisely without data mapping.", "correct": true }
+        ],
+        "explanation": "Think of Venn Diagrams. All of Circle A sits inside Circle B. Circle C overlaps with *some* parts of Circle B, but it doesn't necessarily have to touch Circle A at all!"
+      },
+      {
+        "title": "The Modus Ponens Conditional",
+        "question": "Given statement: 'If it rains, the grass is wet.' You observe the grass is wet. Can you conclude it rained?",
+        "options": [
+          { "text": "Yes, logical dependency is fully validated.", "correct": false },
+          { "text": "No, this is the fallacy of affirming the consequent.", "correct": true },
+          { "text": "Yes, unless the system parameters explicitly state otherwise.", "correct": false }
+        ],
+        "explanation": "Affirming the consequent is a formal fallacy. The grass could be wet because of a sprinkler, a broken pipe, or dew—not necessarily rain!"
+      }
+    ]
   },
   { 
     "id": "math", 
@@ -13,7 +35,29 @@
     "category": "Mathematics", 
     "modules": 8, 
     "icon": "📈", 
-    "description": "Understand calculus and linear transformations through clean geometric animations." 
+    "description": "Understand calculus and linear transformations through clean geometric animations.",
+    "puzzles": [
+      {
+        "title": "Linear Vector Spaces",
+        "question": "What happens to a 2D vector matrix transformed by an identity matrix scaling property?",
+        "options": [
+          { "text": "It rotates precisely 90 degrees.", "correct": false },
+          { "text": "It remains entirely unchanged.", "correct": true },
+          { "text": "It collapses into a singular 1D vector line subspace.", "correct": false }
+        ],
+        "explanation": "An identity matrix acts like the number 1 in basic multiplication; multiplying any vector map by it outputs the exact same coordinate parameters."
+      },
+      {
+        "title": "The Essence of Derivative Rates",
+        "question": "What mathematical structure does the derivative of a function represent graph-wise at a single exact point?",
+        "options": [
+          { "text": "The total bounded area accumulating below the curve line.", "correct": false },
+          { "text": "The slope of the tangent line touching that specific point coordinates.", "correct": true },
+          { "text": "The absolute distance separating local coordinate maximum limits.", "correct": false }
+        ],
+        "explanation": "The derivative yields the instantaneous rate of change, geometrically represented as the slope of the line tangent to the curve at that exact location."
+      }
+    ]
   },
   { 
     "id": "physics", 
@@ -21,6 +65,28 @@
     "category": "Physics", 
     "modules": 15, 
     "icon": "✨", 
-    "description": "Build physical mental models of inertia, momentum, and kinetic tracking layouts." 
+    "description": "Build physical mental models of inertia, momentum, and kinetic tracking layouts.",
+    "puzzles": [
+      {
+        "title": "Inertial Reference Coordinates",
+        "question": "If you drop a ball inside a steadily moving train car moving at constant speed, where does it land?",
+        "options": [
+          { "text": "Directly below your hand, relative to the train floor.", "correct": true },
+          { "text": "Significantly behind you, due to horizontal drag parameters.", "correct": false },
+          { "text": "Slightly ahead of you, due to forward momentum acceleration spikes.", "correct": false }
+        ],
+        "explanation": "Due to inertia, the ball shares the exact same forward velocity component as you and the train car. To you, it drops perfectly straight down."
+      },
+      {
+        "title": "Conservation of Momentum Parameters",
+        "question": "An astronaut floats at rest in space and throws a heavy wrench away. What happens to the astronaut?",
+        "options": [
+          { "text": "They remain motionless because space has no gravity tracking strings.", "correct": false },
+          { "text": "They immediately begin moving in the opposite direction of the wrench throw.", "correct": true },
+          { "text": "They spin wildly in a fixed circle directly where the action occurred.", "correct": false }
+        ],
+        "explanation": "Conservation of total momentum dictates that if the wrench gains forward momentum vectors, the astronaut must inherit an equal and opposite backward momentum tracking rate."
+      }
+    ]
   }
 ]

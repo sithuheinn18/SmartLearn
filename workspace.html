@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn — Study Arena</title>
+    <link rel="stylesheet" href="./src/scss/main.scss">
+</head>
+<body class="workspace-body">
+
+    <header class="site-header">
+        <div class="header-container">
+            <a href="courses.html" class="back-link">⬅️ Back to Catalog</a>
+            <h1 id="workspaceCourseTitle">Loading Track...</h1>
+            <div class="auth-buttons-desktop"></div>
+        </div>
+    </header>
+
+    <main class="workspace-layout-centered">
+        <div class="workspace-card" id="activePuzzleCard">
+            <div class="puzzle-loading">Initializing specialized track module elements...</div>
+        </div>
+    </main>
+
+    <script type="module" src="./src/js/app.js"></script>
+    <script type="module" src="./src/js/workspace.js"></script>
+</body>
+</html>

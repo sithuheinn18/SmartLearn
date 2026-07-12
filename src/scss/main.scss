@@ -120,7 +120,14 @@ body {
         color: $text-muted;
     }
 }
-
+.back-link {
+    text-decoration: none;
+    color: $text-main;
+    transition: color 0.3s ease;
+    &:hover {
+        color: $text-muted;
+    }
+}
 // ==========================================
 // 4. MODULE STYLES (Nested Architecture)
 // ==========================================
@@ -189,6 +196,7 @@ body {
     .auth-buttons-desktop {
         display: flex;
         align-items: center;
+        transition: color 0.3s ease;
         gap: 16px;
     }
 
@@ -1277,4 +1285,275 @@ body {
     color: $text-main;
     opacity: 0.7;
     font-size: 1.1rem;
+}
+
+/* --- WORKSPACE CORE ARENA --- */
+.workspace-layout-centered {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 24px;
+    min-height: calc(100vh - 70px);
+    background-color: $bg-secondary;
+}
+
+.workspace-card {
+    background: $bg-primary;
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 680px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid $border-color;
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-animator-wrapper {
+    overflow: hidden; /* Prevents text elements from popping out during transition */
+    animation: contentFadeIn 0.3s ease-in-out forwards;
+}
+
+/* --- PUZZLE COMPONENTS --- */
+.puzzle-header {
+    margin-bottom: 24px;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 16px;
+
+    .category-tag {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: $brand-color;
+        margin-bottom: 8px;
+    }
+
+    h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: $text-main;
+    }
+}
+
+.puzzle-content {
+    margin-bottom: 24px;
+
+    .track-desc {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: $text-main;
+        opacity: 0.9;
+    }
+
+    .question-text {
+        font-size: 1.15rem;
+        line-height: 1.5;
+        font-weight: 500;
+        color: $text-main;
+    }
+}
+
+/* --- INTERACTIVE CONTAINER BUTTONS --- */
+.puzzle-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.option-btn {
+    padding: 16px;
+    color: $text-main;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    background: $bg-primary;
+    text-align: left;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+
+    &:hover { 
+        background: $bg-secondary; 
+        border-color: $border-color;
+    }
+
+    /* Target state configurations evaluated by JS execution */
+    &.correct { 
+        background-color: rgba(#28a745, 0.08); 
+        border-color: #28a745; 
+        color: #155724; 
+        font-weight: 600;
+    }
+    
+    &.incorrect { 
+        background-color: rgba(#dc3545, 0.08); 
+        border-color: #dc3545; 
+        color: #721c24; 
+    }
+}
+
+/* Global introductory action button execution */
+.action-btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: $brand-color;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    
+    &:hover { opacity: 0.9; }
+}
+
+/* --- DYNAMIC FEEDBACK RESPONSES --- */
+.feedback-panel {
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+
+    &.hidden { 
+        display: none !important; 
+    }
+
+    /* Core variations */
+    &.success {
+        background-color: rgba(#28a745, 0.1);
+        border-color: rgba(#28a745, 0.2);
+        
+        .feedback-title { color: #28a745; }
+    }
+
+    &.warning {
+        background-color: rgba(#dc3545, 0.1);
+        border-color: rgba(#dc3545, 0.2);
+        
+        .feedback-title { color: #dc3545; }
+    }
+
+    .feedback-title {
+        display: block;
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .feedback-explanation {
+        margin: 0;
+        font-size: 0.92rem;
+        line-height: 1.5;
+        color: $text-main;
+        opacity: 0.85;
+    }
+}
+
+.module-status-box {
+    background-color: $bg-secondary;
+    border: 1px dashed $border-color;
+    border-radius: 8px;
+    padding: 16px;
+    color: $text-main;
+    opacity: 0.85;
+    font-size: 0.95rem;
+}
+
+/* --- PROGRESSION FOOTER FRAME --- */
+.action-footer {
+    margin-top: 24px;
+    border-top: 1px solid $border-color;
+    padding-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    animation: fadeIn 0.35s ease forwards;
+}
+
+/* --- SCORE DISPLAY SHIELD --- */
+.score-display-shield {
+    text-align: center;
+    padding: 32px 16px;
+    background: $bg-secondary;
+    border-radius: 12px;
+    border: 1px solid $border-color;
+    margin-bottom: 24px;
+
+    .huge-score-text {
+        display: block;
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: $brand-color;
+        margin-bottom: 12px;
+    }
+}
+
+.action-btn-secondary {
+    width: 100%;
+    padding: 14px;
+    background-color: transparent;
+    color: $text-main;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background-color 0.2s ease;
+    
+    &:hover { background-color: $bg-secondary; }
+}
+
+/* --- PROGRESS BAR APPARATUS COMPONENTS --- */
+.progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .progress-percentage-text {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: $text-main;
+        opacity: 0.6;
+    }
+}
+
+.progress-bar-wrapper {
+    width: 100%;
+    height: 6px;
+    background-color: $bg-secondary;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid $border-color;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: $brand-color;
+    width: 0%; /* ⚡ Explicit baseline starting parameter for the engine */
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* Quick animation parsing */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes contentFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
