@@ -1541,6 +1541,129 @@ body {
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* --- DASHBOARD STRUCTURAL LAYOUT --- */
+.dashboard-layout-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 32px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 24px;
+    align-items: flex-start;
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- SIDEBAR PROFILE CARD APPARATUS --- */
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-card, .stats-card {
+    background: $bg-primary;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.avatar-placeholder {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed $border-color;
+    
+    strong { color: $brand-color; }
+}
+
+/* --- ACTIVE TRACK LIST COMPONENTS --- */
+.dashboard-track-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: $bg-primary;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    
+    @media (max-width: 580px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.track-icon-badge {
+    font-size: 2.2rem;
+    background: $bg-secondary;
+    padding: 16px;
+    border-radius: 10px;
+    line-height: 1;
+}
+
+.track-details {
+    flex-grow: 1;
+    
+    h3 { margin: 4px 0 12px 0; font-size: 1.2rem; }
+}
+
+.dashboard-progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 400px;
+    
+    .dashboard-bar-wrapper {
+        flex-grow: 1;
+        height: 6px;
+        background: $bg-secondary;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .dashboard-bar-fill {
+        height: 100%;
+        background: $brand-color;
+    }
+    
+    .progress-lbl {
+        font-size: 0.8rem;
+        font-weight: 600;
+        opacity: 0.7;
+        white-space: nowrap;
+    }
+}
+
+.action-btn-resume {
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid $brand-color;
+    color: $brand-color;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        background: $brand-color;
+        color: white;
+    }
+}
+
 
 /* Quick animation parsing */
 @keyframes fadeIn {
