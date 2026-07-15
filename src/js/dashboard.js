@@ -42,14 +42,30 @@ function syncProfileState() {
 
 async function loadEnrolledTracks() {
     try {
-        const response = await fetch('/courses.json');
-        if (!response.ok) throw new Error("Data retrieval anomaly.");
-        const courses = await response.json();
+        const user = netlifyIdentity.currentUser();
+        const userId = user ? user.id : "dev_sithu_hein"; // Matching dev fallback
 
-        // Simulated Enrollment State (In production, this array pulls from a user database!)
-        // Let's pretend the user has active tracking loops in 'logic' and 'math'
-        const enrolledIds = ['logic', 'math']; 
-        const enrolledCourses = courses.filter(c => enrolledIds.includes(c.id));
+        // 1. Fetch the master course list mapping array
+        const courseResponse = await fetch('/courses.json');
+        if (!courseResponse.ok) throw new Error("Data retrieval anomaly.");
+        const courses = await courseResponse.json();
+
+        // 2. Fetch user's real progress data map from our MongoDB cloud API backend
+        const progressResponse = await fetch(`/.netlify/functions/get-progress?userId=${userId}`);
+        if (!progressResponse.ok) throw new Error("Failed syncing user logs.");
+        const cloudProgressList = await progressResponse.json();
+
+        // Convert cloud progress array into an easily readable lookup object: { logic: 100, math: 50 }
+        const progressLookup = {};
+        cloudProgressList.forEach(item => {
+            progressLookup[item.courseId] = item.progress;
+        });
+
+        // Filter courses down to only tracks that have cloud progress entries saved
+        const enrolledCourses = courses.filter(course => progressLookup[course.id] !== undefined);
+
+        // Attach the computed dynamic lookup tracking straight onto our rendering engines
+        window.currentProgressMap = progressLookup; 
 
         renderDashboardTracks(enrolledCourses);
         updateMetrics(enrolledCourses);
@@ -57,7 +73,7 @@ async function loadEnrolledTracks() {
     } catch (error) {
         console.error(error);
         if (enrollmentContainer) {
-            enrollmentContainer.innerHTML = `<p class="grid-message">Failed to process profile data stream rules.</p>`;
+            enrollmentContainer.innerHTML = `<p class="grid-message">Failed to sync profile metrics stream.</p>`;
         }
     }
 }
@@ -66,14 +82,13 @@ function renderDashboardTracks(activeTracks) {
     if (!enrollmentContainer) return;
 
     if (activeTracks.length === 0) {
-        enrollmentContainer.innerHTML = `<p class="grid-message">You are not currently enrolled in any paths. Head to the catalog to initialize one!</p>`;
+        enrollmentContainer.innerHTML = `<p class="grid-message">No active data paths initialized in your cloud profile loop yet.</p>`;
         return;
     }
 
-    // Map out dynamic layout components with custom hardcoded visual bars for demonstration
-    enrollmentContainer.innerHTML = activeTracks.map((track, index) => {
-        // Let's simulate distinct progress points for each path item
-        const simulatedProgress = index === 0 ? 50 : 0; 
+    enrollmentContainer.innerHTML = activeTracks.map(track => {
+        // Read progress value from our global window lookup tracker populated by the database
+        const realProgress = window.currentProgressMap[track.id] || 0;
         
         return `
             <div class="dashboard-track-card">
@@ -81,15 +96,16 @@ function renderDashboardTracks(activeTracks) {
                 <div class="track-details">
                     <span class="track-badge">${track.category}</span>
                     <h3>${track.title}</h3>
-                    
                     <div class="dashboard-progress-container">
                         <div class="dashboard-bar-wrapper">
-                            <div class="dashboard-bar-fill" style="width: ${simulatedProgress}%;"></div>
+                            <div class="dashboard-bar-fill" style="width: ${realProgress}%;"></div>
                         </div>
-                        <span class="progress-lbl">${simulatedProgress}% Complete</span>
+                        <span class="progress-lbl">${realProgress}% Complete</span>
                     </div>
                 </div>
-                <a href="workspace.html?course=${track.id}" class="action-btn-resume">Resume Arena</a>
+                <a href="workspace.html?course=${track.id}" class="action-btn-resume">
+                    ${realProgress === 100 ? "Review Arena" : "Resume Arena"}
+                </a>
             </div>
         `;
     }).join('');
@@ -99,6 +115,15 @@ function updateMetrics(tracks) {
     const completedElement = document.getElementById('statCompleted');
     const xpElement = document.getElementById('statXP');
 
-    if (completedElement) completedElement.innerText = "0"; // Hardcoded initial placeholder values
-    if (xpElement) xpElement.innerText = `${tracks.length * 120} XP`;
+    let completedCount = 0;
+    let totalXP = 0;
+
+    tracks.forEach(track => {
+        const progress = window.currentProgressMap[track.id] || 0;
+        if (progress === 100) completedCount++;
+        totalXP += Math.round(progress * 1.5); 
+    });
+
+    if (completedElement) completedElement.innerText = completedCount;
+    if (xpElement) xpElement.innerText = `${totalXP} XP`;
 }

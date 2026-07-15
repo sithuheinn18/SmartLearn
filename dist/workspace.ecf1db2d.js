@@ -876,8 +876,31 @@ function handleAnswerSelection(e, puzzle) {
     actionFooter.classList.remove('hidden');
 }
 // 🏆 NEW: Completion Summary Frame Component
-function renderQuizResults() {
+async function renderQuizResults() {
     const finalPercent = Math.round(score / activeCourseData.puzzles.length * 100);
+    // 👤 Get the current logged-in user from Netlify Identity
+    const user = (0, _netlifyIdentityWidgetDefault.default).currentUser();
+    // Fallback ID if running in local DESIGN_MODE without active login tokens
+    const userId = user ? user.id : "dev_sithu_hein";
+    // 🔥 BACKEND HANDSHAKE: Ship the results matrix straight to our MongoDB Serverless endpoint
+    try {
+        const response = await fetch('/.netlify/functions/save-progress', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId,
+                courseId: activeCourseData.id,
+                progress: finalPercent
+            })
+        });
+        if (!response.ok) throw new Error("Cloud synchronization anomaly.");
+        console.log("\uD83C\uDFAF Progress matrix safely locked into MongoDB Atlas cloud storage.");
+    } catch (error) {
+        console.error("\u274C Failed to stream progress tracking metrics to the database:", error);
+    }
+    // Injected template UI layout wrapper block
     cardElement.innerHTML = `
         <div class="card-animator-wrapper">
             <div class="puzzle-header">
