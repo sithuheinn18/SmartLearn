@@ -2,7 +2,7 @@ import netlifyIdentity from 'netlify-identity-widget';
 
 // ==========================================
 // 🛠️ DEVELOPMENT CONTROLS
-const DESIGN_MODE = true; 
+const DESIGN_MODE = false; 
 // ==========================================
 
 let activeCourseData = null;

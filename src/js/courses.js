@@ -2,7 +2,7 @@ import netlifyIdentity from 'netlify-identity-widget';
 
 // ==========================================
 // 🛠️ DEVELOPMENT CONTROLS
-const DESIGN_MODE = true; 
+const DESIGN_MODE = false; 
 // ==========================================
 
 // 📦 This variable will securely store our streaming JSON array elements

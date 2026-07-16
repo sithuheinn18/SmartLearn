@@ -2,7 +2,7 @@ import netlifyIdentity from 'netlify-identity-widget';
 
 // ==========================================
 // 🛠️ DEVELOPMENT CONTROLS
-const DESIGN_MODE = true; 
+const DESIGN_MODE = false; 
 // ==========================================
 
 const enrollmentContainer = document.getElementById('enrollmentListContainer');
@@ -91,7 +91,7 @@ function renderDashboardTracks(activeTracks) {
         const realProgress = window.currentProgressMap[track.id] || 0;
         
         return `
-            <div class="dashboard-track-card animate-on-scroll">
+            <div class="dashboard-track-card">
                 <div class="track-icon-badge">${track.icon}</div>
                 <div class="track-details">
                     <span class="track-badge">${track.category}</span>
