@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="./src/scss/main.scss">
 </head>
 <body class="workspace-body">
+    <div class="loading" id="loading">
+        <span class="loading-circle"></span>
+    </div>
 
     <header class="site-header">
         <div class="header-container">
@@ -23,11 +26,11 @@
 
     <main class="catalog-container">
         <div class="catalog-header">
-            <h2>Explore Active Tracks</h2>
-            <p id="resultCount" style="color: grey; font-size: 0.9rem; margin-top: 4px;">Loading dynamic arrays...</p>
+            <h2 class="animate-on-scroll">Explore Active Tracks</h2>
+            <p class="animate-on-scroll" id="resultCount" style="color: grey; font-size: 0.9rem; margin-top: 4px; transition-delay: 0.15s;">Loading dynamic arrays...</p>
         </div>
 
-        <div class="courses-grid" id="coursesGrid"></div>
+        <div class="courses-grid animate-on-scroll" id="coursesGrid" style="transition-delay: 0.3s;"></div>
     </main>
 
     <div id="netlify-auth-root"></div>

@@ -104,6 +104,45 @@ body {
   color: var(--text-muted);
 }
 
+.loading {
+  z-index: 999;
+  background: var(--bg-primary);
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  transition: opacity 1s linear;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.loading .loading-circle {
+  border-top: var(--brand-color) 5px solid;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: .5s linear infinite rotate;
+  position: relative;
+}
+
+.loading.hidden {
+  opacity: 0;
+  z-index: -999;
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transition: opacity .6s ease-out, transform .6s ease-out;
+  transform: translateY(30px);
+}
+
+.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .site-header {
   border-bottom: 2px solid var(--border-color);
   background-color: rgba(var(--bg-primary), .95);
@@ -1134,6 +1173,7 @@ body {
 .site-footer .footer-links a {
   color: var(--text-muted);
   text-decoration: none;
+  transition: color .3s;
 }
 
 .site-footer .footer-links a:hover {
@@ -1658,5 +1698,19 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@view-transition {
+  navigation: auto;
 }
 /*# sourceMappingURL=test.b10d73a7.css.map */

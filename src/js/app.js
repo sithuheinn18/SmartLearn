@@ -2,6 +2,10 @@ import netlifyIdentity from 'netlify-identity-widget';
 
 // Wait for DOM layout tree paths to assemble fully
 document.addEventListener("DOMContentLoaded", () => {
+
+    // --- LOADING SCREEN ELEMENTS 
+
+    const loadingScreen = document.getElementById("loading");
     
     // --- MOBILE DRAWER NAV ELEMENTS ---
     const menuTrigger = document.getElementById("menu-trigger");
@@ -11,6 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- DARK MODE ELEMENTS ---
     const themeToggle = document.querySelector(".logo-icon");
     const savedTheme = localStorage.getItem("theme");
+
+    if(loadingScreen) {
+        loadingScreen.classList.add("hidden");
+    }
 
     // Check if user previously saved a dark theme preference
     if (savedTheme === "dark") {
@@ -50,6 +58,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    const scrollElements = document.querySelectorAll(".animate-on-scroll");
+
+    const elementObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            // Check if the element has entered the viewport boundary
+            if (entry.isIntersecting) {
+                entry.target.classList.add("animate-in");
+                
+                // Stop observing once animated so it doesn't repeat when scrolling up
+                observer.unobserve(entry.target); 
+            }
+        });
+    }, {
+        threshold: 0.1, // Triggers when 10% of the element is visible
+        rootMargin: "0px 0px -50px 0px" // Slight offset so it triggers just before hitting the bottom
+    });
+
+    scrollElements.forEach(el => elementObserver.observe(el));
 });
 
 
@@ -150,8 +177,6 @@ netlifyIdentity.on('init', user => renderUserHeaderState());
 netlifyIdentity.on('login', user => { 
     renderUserHeaderState(); 
     netlifyIdentity.close(); 
-    
-    // 🔥 INSTANT FORWARDING: Send them straight to the courses portal!
     window.location.href = 'courses.html'; 
 });
 

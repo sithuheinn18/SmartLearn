@@ -45,7 +45,6 @@ function initWorkspace() {
 
     if (searchInput) searchInput.disabled = false;
     
-    // 🔥 Fire the JSON ingestion runtime instead of referencing raw static memory arrays
     loadCourseDatabase(); 
 }
 

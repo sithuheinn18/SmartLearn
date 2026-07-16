@@ -719,6 +719,8 @@ var _netlifyIdentityWidget = require("netlify-identity-widget");
 var _netlifyIdentityWidgetDefault = parcelHelpers.interopDefault(_netlifyIdentityWidget);
 // Wait for DOM layout tree paths to assemble fully
 document.addEventListener("DOMContentLoaded", ()=>{
+    // --- LOADING SCREEN ELEMENTS 
+    const loadingScreen = document.getElementById("loading");
     // --- MOBILE DRAWER NAV ELEMENTS ---
     const menuTrigger = document.getElementById("menu-trigger");
     const mobileDrawer = document.getElementById("mobile-drawer");
@@ -726,6 +728,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     // --- DARK MODE ELEMENTS ---
     const themeToggle = document.querySelector(".logo-icon");
     const savedTheme = localStorage.getItem("theme");
+    if (loadingScreen) loadingScreen.classList.add("hidden");
     // Check if user previously saved a dark theme preference
     if (savedTheme === "dark") document.body.classList.add("dark-theme");
     // 💡 Click handler tracking routine for Dark Mode Toggle
@@ -751,6 +754,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
             }
         });
     });
+    const scrollElements = document.querySelectorAll(".animate-on-scroll");
+    const elementObserver = new IntersectionObserver((entries, observer)=>{
+        entries.forEach((entry)=>{
+            // Check if the element has entered the viewport boundary
+            if (entry.isIntersecting) {
+                entry.target.classList.add("animate-in");
+                // Stop observing once animated so it doesn't repeat when scrolling up
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px" // Slight offset so it triggers just before hitting the bottom
+    });
+    scrollElements.forEach((el)=>elementObserver.observe(el));
 });
 // --- INITIALIZE NETLIFY CONFIGURATION ---
 (0, _netlifyIdentityWidgetDefault.default).init({
@@ -824,7 +842,6 @@ function renderUserHeaderState() {
 (0, _netlifyIdentityWidgetDefault.default).on('login', (user)=>{
     renderUserHeaderState();
     (0, _netlifyIdentityWidgetDefault.default).close();
-    // 🔥 INSTANT FORWARDING: Send them straight to the courses portal!
     window.location.href = 'courses.html';
 });
 (0, _netlifyIdentityWidgetDefault.default).on('logout', ()=>{

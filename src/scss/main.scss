@@ -128,9 +128,48 @@ body {
         color: $text-muted;
     }
 }
-// ==========================================
-// 4. MODULE STYLES (Nested Architecture)
-// ==========================================
+// --- LOADING SCREEN ---
+
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: $bg-primary;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s linear;
+
+    .loading-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border-top: $brand-color 5px solid; 
+        animation: rotate 0.5s linear infinite; 
+        position: relative;
+    }
+
+    &.hidden { 
+        opacity: 0;
+        z-index: -999;
+    }
+}
+
+// The initial state hidden off-screen
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+// The state triggered by JavaScript when scrolled into view
+.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 // --- SITE HEADER ---
 .site-header {
@@ -1184,7 +1223,7 @@ body {
         a {
             color: $text-muted;
             text-decoration: none;
-            
+            transition: color 0.3s ease;
             &:hover {
                 color: $text-main;
             }
@@ -1679,4 +1718,16 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@view-transition{
+    navigation: auto;
 }

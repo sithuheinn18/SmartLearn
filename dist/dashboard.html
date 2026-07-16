@@ -6,6 +6,9 @@
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body class="dashboard-body">
+    <div class="loading" id="loading">
+        <span class="loading-circle"></span>
+    </div>
 
     <header class="site-header">
         <div class="header-container">
@@ -14,19 +17,19 @@
             </div>
 
             <a href="/courses.html" class="btn-pill btn-primary">Courses</a>
-            <div id="authButtonSlot"></div>
+            <!-- <div id="authButtonSlot"></div> -->
         </div>
     </header>
 
     <main class="dashboard-layout-grid">
         <aside class="dashboard-sidebar">
-            <div class="profile-card" id="userProfileCard">
+            <div class="profile-card animate-on-scroll" id="userProfileCard">
                 <div class="avatar-placeholder">👤</div>
                 <h3 id="profileName">Loading Student...</h3>
                 <p id="profileEmail">...</p>
             </div>
             
-            <div class="stats-card">
+            <div class="stats-card animate-on-scroll" style="transition-delay: .15s">
                 <h4>Track Metrics</h4>
                 <div class="stat-row"><span>Completed Tracks</span><strong id="statCompleted">0</strong></div>
                 <div class="stat-row"><span>XP Earned</span><strong id="statXP">0 XP</strong></div>
@@ -34,8 +37,8 @@
         </aside>
 
         <section class="dashboard-content">
-            <h2>Your Active Learning Tracks</h2>
-            <div class="enrollment-list" id="enrollmentListContainer">
+            <h2 class="animate-on-scroll" style="transition-delay: .3s">Your Active Learning Tracks</h2>
+            <div class="enrollment-list animate-on-scroll" id="enrollmentListContainer" style="transition-delay: .45s">
                 <div class="grid-message">Synchronizing your user profile tracking matrices...</div>
             </div>
         </section>
